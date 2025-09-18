@@ -2,9 +2,9 @@ const http = require('http');
 
 const server = http.createServer((req,res)=>{
     console.log('server up and running');
-
-    
-
+    res.setHeader('Content-Type', 'text/html');
+    res.write('<body>hello from the server!</body>');
+    res.end();
 });
 
 server.listen(4000);
@@ -40,4 +40,20 @@ listen  -
 res.write() = 
     sends a chunk of data to the client (the browser) as part of the HTTP response without ending the response yet.
 
+res.end() = 
+    does 3 things  -
+        1. send optional ending data  - res.end('the end') // this will be rendered at the end 
+        2. flush the remaining data - 
+            buffered part of the res will be send before the ending the response cycle. 
+            here buffered means - Node.js may temporarily hold (store) some data in memory before actually sending it over the network.
+            here , The headers (Content-Type) are not immediately sent the moment you call res.setHeader().
+            Node.js keeps them in memory (this is called a buffer) until it actually needs to send the response.
+
+        3. ending the respnse cycle - The browser knows “Okay, no more data is coming. I can render this page fully now.”
+
  */
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
